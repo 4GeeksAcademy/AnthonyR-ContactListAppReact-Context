@@ -51,13 +51,31 @@ export const Home = () => {
   }, []);
 
   return (
-    <Box>
-      <ContactCard
-        name="Tony Rengifo"
-        address="Dg 83 #76-20"
-        phone="3213663013"
-        email="tonyreng01gmail.com"
-      />
+    <Box sx={{marginTop: 3}}>
+      <Card sx={{maxWidth: "700px", margin: "auto"}}>
+        <ContactCard
+          name="Tony Rengifo"
+          address="Dg 83 #76-20"
+          phone="3213663013"
+          email="tonyreng01gmail.com"
+        />
+      </Card>
+      <Card sx={{maxWidth: "700px", margin: "auto"}}>
+        <ContactCard
+          name="Tony Rengifo"
+          address="Dg 83 #76-20"
+          phone="3213663013"
+          email="tonyreng01gmail.com"
+        />
+      </Card>
+      <Card sx={{maxWidth: "700px", margin: "auto"}}>
+        <ContactCard
+          name="Tony Rengifo"
+          address="Dg 83 #76-20"
+          phone="3213663013"
+          email="tonyreng01gmail.com"
+        />
+      </Card>
     </Box>
   );
 };
