@@ -1,7 +1,8 @@
-import { Box } from "@mui/material";
+import { Box, Card } from "@mui/material";
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useEffect } from "react";
+import { ContactCard } from "../components/ContactCard.jsx";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -50,12 +51,13 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="text-center mt-5">
-      <Box></Box>
-      <h1>Hello Rigo!!</h1>
-      <p>
-        <img src={rigoImageUrl} />
-      </p>
-    </div>
+    <Box>
+      <ContactCard
+        name="Tony Rengifo"
+        address="Dg 83 #76-20"
+        phone="3213663013"
+        email="tonyreng01gmail.com"
+      />
+    </Box>
   );
 };
