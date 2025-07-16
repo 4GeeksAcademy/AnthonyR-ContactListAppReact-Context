@@ -47,6 +47,9 @@ export const ContactCard = (props) => {
     return {
       sx: {
         bgcolor: stringToColor(name),
+        width: 100,
+        height: 100,
+        fontSize: "2.5rem",
       },
       children: initials.toUpperCase(),
     };
@@ -65,10 +68,7 @@ export const ContactCard = (props) => {
           }}
         >
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Avatar
-              {...stringAvatar(props.name || "Unnamed Contact")}
-              sx={{ width: 100, height: 100, fontSize: "2.5rem" }}
-            />
+            <Avatar {...stringAvatar(props.name || "Unnamed Contact")} />
           </Box>
         </CardContent>
         <CardContent
@@ -99,13 +99,6 @@ export const ContactCard = (props) => {
                 </Button>
                 <Button>
                   <DeleteIcon />
-                </Button>
-                <Button
-                  loading
-                  loadingPosition="start"
-                  startIcon={<SaveIcon />}
-                >
-                  Save
                 </Button>
               </ButtonGroup>
             </Box>
