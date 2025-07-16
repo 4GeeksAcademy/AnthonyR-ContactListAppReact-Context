@@ -1,4 +1,4 @@
-import { Box, Card } from "@mui/material";
+import { Box, Card, Typography } from "@mui/material";
 import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useEffect } from "react";
@@ -51,30 +51,28 @@ export const Home = () => {
   }, []);
 
   return (
-    <Box sx={{marginTop: 3}}>
-      <Card sx={{maxWidth: "700px", margin: "auto"}}>
-        <ContactCard
-          name="Tony Rengifo"
-          address="Dg 83 #76-20"
-          phone="3213663013"
-          email="tonyreng01gmail.com"
-        />
-      </Card>
-      <Card sx={{maxWidth: "700px", margin: "auto"}}>
-        <ContactCard
-          name="Tony Rengifo"
-          address="Dg 83 #76-20"
-          phone="3213663013"
-          email="tonyreng01gmail.com"
-        />
-      </Card>
-      <Card sx={{maxWidth: "700px", margin: "auto"}}>
-        <ContactCard
-          name="Tony Rengifo"
-          address="Dg 83 #76-20"
-          phone="3213663013"
-          email="tonyreng01gmail.com"
-        />
+    <Box sx={{ marginTop: 3 }}>
+      <Card sx={{ maxWidth: "700px", margin: "auto" }}>
+        {!store?.contacts.length && (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h5">No contacts</Typography>
+          </Box>
+        )}
+        {store?.contacts.map((contact) => (
+          <ContactCard
+            key={contact.id}
+            name={contact.name}
+            address={contact.address}
+            phone={contact.phone}
+            email={contact.email}
+          />
+        ))}
       </Card>
     </Box>
   );
