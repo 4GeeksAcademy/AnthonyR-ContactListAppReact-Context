@@ -8,8 +8,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import useGlobalReducer from "../hooks/useGlobalReducer";
 
 export const NewContactModal = ({ open, onClose }) => {
+  const { store, dispatch } = useGlobalReducer();
   const initialForm = {
     fullname: "",
     email: "",
@@ -57,6 +59,7 @@ export const NewContactModal = ({ open, onClose }) => {
       );
 
       const data = await response.json();
+      console.log(data);
 
       if (response.ok) {
         Swal.fire({
@@ -64,6 +67,10 @@ export const NewContactModal = ({ open, onClose }) => {
           text: "Your contact has been saved successfully.",
           icon: "success",
           confirmButtonText: "Great",
+        });
+        dispatch({
+          type: "add_contact",
+          payload: data,
         });
         setForm(initialForm);
         onClose();
