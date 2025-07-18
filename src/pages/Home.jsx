@@ -1,8 +1,8 @@
 import { Box, Card, Typography } from "@mui/material";
-import rigoImageUrl from "../assets/img/rigo-baby.jpg";
 import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useEffect } from "react";
 import { ContactCard } from "../components/ContactCard.jsx";
+import Swal from "sweetalert2";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
@@ -50,6 +50,49 @@ export const Home = () => {
     getContactList();
   }, []);
 
+  const handleOnClickDelete = async (contact) => {
+    try {
+      const response = await fetch(
+        `https://playground.4geeks.com/contact/agendas/tony/contacts/${contact.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 404) {
+        Swal.fire({
+          title: "ERROR!",
+          text: "Contact not found",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+        return;
+      }
+      if (response.ok) {
+        Swal.fire({
+          title: "Contact deleted!",
+          text: "Your contact was successfully deleted.",
+          icon: "success",
+          confirmButtonText: "Great",
+        });
+        dispatch({
+          type: "delete_contact",
+          payload: contact,
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        title: "ERROR!",
+        text: "Server connection failed.",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return console.error(error);
+    }
+  };
+
   return (
     <Box sx={{ marginTop: 3 }}>
       <Card sx={{ maxWidth: "700px", margin: "auto" }}>
@@ -71,6 +114,7 @@ export const Home = () => {
             address={contact.address}
             phone={contact.phone}
             email={contact.email}
+            onClickDelete={() => handleOnClickDelete(contact)}
           />
         ))}
       </Card>
