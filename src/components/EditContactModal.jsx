@@ -10,13 +10,13 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import useGlobalReducer from "../hooks/useGlobalReducer";
 
-export const NewContactModal = ({ open, onClose }) => {
+export const EditContactModal = ({ open, onClose, contact }) => {
   const { store, dispatch } = useGlobalReducer();
   const initialForm = {
-    fullname: "",
-    email: "",
-    phone: "",
-    address: "",
+    fullname: contact.name,
+    email: contact.email,
+    phone: contact.phone,
+    address: contact.address,
   };
 
   const [form, setForm] = useState(initialForm);
@@ -26,35 +26,23 @@ export const NewContactModal = ({ open, onClose }) => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const newContactFetch = async (form) => {
-    const contactData = {
+  const editContactFetch = async (form) => {
+    const editData = {
       name: form.fullname,
       email: form.email,
       phone: form.phone,
       address: form.address,
     };
 
-    for (const key in contactData) {
-      if (contactData[key].trim() === "") {
-        Swal.fire({
-          title: "ERROR!",
-          text: "Incomplete data",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
-        return;
-      }
-    }
-
     try {
       const response = await fetch(
-        "https://playground.4geeks.com/contact/agendas/tony/contacts",
+        `https://playground.4geeks.com/contact/agendas/tony/contacts/${contact.id}`,
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(contactData),
+          body: JSON.stringify(editData),
         }
       );
 
@@ -62,16 +50,21 @@ export const NewContactModal = ({ open, onClose }) => {
 
       if (response.ok) {
         Swal.fire({
-          title: "Contact saved!",
-          text: "Your contact has been saved successfully.",
+          title: "Contact edited!",
+          text: "Your contact has been edited successfully.",
           icon: "success",
           confirmButtonText: "Great",
         });
         dispatch({
-          type: "add_contact",
+          type: "edit_contact",
           payload: data,
         });
-        setForm(initialForm);
+        setForm({
+          fullname: data.name,
+          email: data.email,
+          phone: data.phone,
+          address: data.address,
+        });
         onClose();
 
         return;
@@ -79,7 +72,7 @@ export const NewContactModal = ({ open, onClose }) => {
     } catch (error) {
       Swal.fire({
         title: "ERROR!",
-        text: result.msg || "Server connection failed.",
+        text: "Server connection failed.",
         icon: "error",
         confirmButtonText: "Ok",
       });
@@ -110,7 +103,7 @@ export const NewContactModal = ({ open, onClose }) => {
           gutterBottom
           sx={{ fontWeight: 600, width: "fit-content", margin: "auto" }}
         >
-          Add a New Contact
+          Edit your contact
         </Typography>
 
         <Stack spacing={2} mt={2}>
@@ -156,7 +149,7 @@ export const NewContactModal = ({ open, onClose }) => {
             variant="contained"
             color="primary"
             size="large"
-            onClick={() => newContactFetch(form)}
+            onClick={() => editContactFetch(form)}
           >
             Save Contact
           </Button>

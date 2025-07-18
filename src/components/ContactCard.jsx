@@ -13,8 +13,12 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useState } from "react";
+import { EditContactModal } from "./EditContactModal.jsx";
 
 export const ContactCard = (props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   function stringToColor(string) {
     let hash = 0;
     let i;
@@ -54,6 +58,14 @@ export const ContactCard = (props) => {
       children: initials.toUpperCase(),
     };
   }
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <Box>
@@ -95,7 +107,11 @@ export const ContactCard = (props) => {
                 aria-label="Loading button group"
               >
                 <Button>
-                  <EditIcon />
+                  <EditIcon
+                    onClick={() => {
+                      handleOpenModal();
+                    }}
+                  />
                 </Button>
                 <Button onClick={props.onClickDelete}>
                   <DeleteIcon />
@@ -116,6 +132,7 @@ export const ContactCard = (props) => {
           </Box>
         </CardContent>
       </Card>
+      <EditContactModal open={isModalOpen} onClose={handleCloseModal} contact={props.contact}/>
     </Box>
   );
 };

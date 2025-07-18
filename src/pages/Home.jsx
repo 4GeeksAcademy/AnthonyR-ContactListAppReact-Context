@@ -115,6 +115,7 @@ export const Home = () => {
             phone={contact.phone}
             email={contact.email}
             onClickDelete={() => handleOnClickDelete(contact)}
+            contact={contact}
           />
         ))}
       </Card>
