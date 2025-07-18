@@ -97,7 +97,7 @@ export const ContactCard = (props) => {
                 <Button>
                   <EditIcon />
                 </Button>
-                <Button>
+                <Button onClick={props.onClickDelete}>
                   <DeleteIcon />
                 </Button>
               </ButtonGroup>

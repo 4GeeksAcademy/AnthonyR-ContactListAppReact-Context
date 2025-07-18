@@ -78,13 +78,13 @@ export const NewContactModal = ({ open, onClose }) => {
         return;
       }
     } catch (error) {
-      console.error("Network/server error:", error);
       Swal.fire({
         title: "ERROR!",
         text: result.msg || "Server connection failed.",
         icon: "error",
         confirmButtonText: "Ok",
       });
+      console.error("Network/server error:", error);
     }
   };
 
