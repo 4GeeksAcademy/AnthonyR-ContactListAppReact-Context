@@ -3,9 +3,12 @@ import useGlobalReducer from "../hooks/useGlobalReducer.jsx";
 import { useEffect } from "react";
 import { ContactCard } from "../components/ContactCard.jsx";
 import Swal from "sweetalert2";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from "react";
 
 export const Home = () => {
   const { store, dispatch } = useGlobalReducer();
+  const [loading, setLoading] = useState(true);
 
   const createUser = async () => {
     try {
@@ -28,6 +31,7 @@ export const Home = () => {
   useEffect(() => {
     const getContactList = async () => {
       try {
+        setLoading(true);
         const response = await fetch(
           "https://playground.4geeks.com/contact/agendas/tony/contacts"
         );
@@ -42,6 +46,7 @@ export const Home = () => {
             payload: data.contacts,
           });
         }
+        setLoading(false);
       } catch (error) {
         return console.error(error);
       }
@@ -96,7 +101,34 @@ export const Home = () => {
   return (
     <Box sx={{ marginTop: 3 }}>
       <Card sx={{ maxWidth: "700px", margin: "auto" }}>
-        {!store?.contacts.length && (
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 5 }}>
+            <CircularProgress />
+          </Box>
+        ) : !store?.contacts.length ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="h5">No contacts</Typography>
+          </Box>
+        ) : (
+          store?.contacts.map((contact) => (
+            <ContactCard
+              key={contact.id}
+              name={contact.name}
+              address={contact.address}
+              phone={contact.phone}
+              email={contact.email}
+              onClickDelete={() => handleOnClickDelete(contact)}
+              contact={contact}
+            />
+          ))
+        )}
+        {/* {!store?.contacts.length && (
           <Box
             sx={{
               display: "flex",
@@ -117,7 +149,7 @@ export const Home = () => {
             onClickDelete={() => handleOnClickDelete(contact)}
             contact={contact}
           />
-        ))}
+        ))} */}
       </Card>
     </Box>
   );

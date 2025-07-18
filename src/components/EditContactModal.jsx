@@ -34,6 +34,21 @@ export const EditContactModal = ({ open, onClose, contact }) => {
       address: form.address,
     };
 
+    const noChanges = Object.keys(editData).every(
+      (key) =>
+        String(editData[key]).trim() === String(contact[key] || "").trim()
+    );
+
+    if (noChanges) {
+      Swal.fire({
+        title: "ERROR!",
+        text: "You did not edit any fields",
+        icon: "error",
+        confirmButtonText: "Ok",
+      });
+      return;
+    }
+
     try {
       const response = await fetch(
         `https://playground.4geeks.com/contact/agendas/tony/contacts/${contact.id}`,
